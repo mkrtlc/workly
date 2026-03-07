@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "Workly",
+  "version": "1.1.0",
+  "description": "Trendyol, Hepsiburada, Amazon ve diğer sitelerde gördüğünüz ürünlerin emek karşılığını hesaplayın.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "language.js",
+        "parsers/base.js",
+        "parsers/trendyol.js",
+        "parsers/hepsiburada.js",
+        "parsers/amazon.js",
+        "parsers/generic.js",
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Workly - Work Hours Calculator"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/*"
+      ],
+      "matches": [
+        "*://*.trendyol.com/*",
+        "*://*.hepsiburada.com/*",
+        "*://*.amazon.com.tr/*",
+        "*://*.amazon.com/*",
+        "<all_urls>"
+      ]
+    }
+  ]
+}

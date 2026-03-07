@@ -1,0 +1,477 @@
+/* Inline Workly Widget Styles */
+#workly-inline-widget {
+  margin: 12px 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999999 !important;
+  position: relative !important;
+  display: block !important;
+  visibility: visible !important;
+  overflow: visible !important;
+  max-height: none !important;
+  min-height: auto !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+#workly-inline-widget * {
+  box-sizing: border-box;
+}
+
+.workly-inline-content {
+  background: #000 !important;
+  color: white !important;
+  padding: 12px 16px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  position: relative !important;
+  backdrop-filter: blur(10px);
+  z-index: 999999 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  overflow: visible !important;
+  max-height: none !important;
+  min-height: auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 280px;
+}
+
+.workly-inline-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workly-inline-icon svg {
+  color: #000;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.workly-inline-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.workly-inline-main {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: white !important;
+}
+
+.workly-inline-main strong {
+  font-weight: 600;
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.workly-inline-sub {
+  font-size: 11px;
+  opacity: 0.8;
+  font-weight: 400;
+  color: #ccc !important;
+}
+
+.workly-inline-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: #999;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0 !important;
+}
+
+.workly-inline-close:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode support - Actually, let's keep it black (premium look) in both modes for consistency, or invert */
+@media (prefers-color-scheme: dark) {
+  .workly-inline-content {
+    background: #000 !important;
+    border: 1px solid #333 !important;
+  }
+}
+
+/* Animation states */
+#workly-inline-widget.workly-enter {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+
+#workly-inline-widget.workly-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Ensure the widget doesn't interfere with page layout */
+#workly-inline-widget {
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+/* Force visibility */
+#workly-inline-widget,
+#workly-inline-widget * {
+  box-sizing: border-box !important;
+}
+
+#workly-inline-widget:not([style*="display: none"]) {
+  display: block !important;
+}
+
+#workly-inline-widget {
+  margin: 12px 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.workly-inline-main,
+.workly-inline-sub {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  text-indent: 0 !important;
+}
+
+/* Fixed widget styles */
+#workly-fixed-widget {
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  z-index: 999999 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  display: block !important;
+  visibility: visible !important;
+  max-width: 320px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#workly-fixed-widget .workly-inline-content {
+  background: #000 !important;
+  color: white !important;
+  padding: 16px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  position: relative !important;
+}
+
+/* Legacy floating widget (if used elsewhere) */
+#workly-widget {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.workly-content {
+  background: #000;
+  color: white;
+  padding: 16px 20px;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 300px;
+  max-width: 400px;
+  pointer-events: auto;
+  position: relative;
+}
+
+.workly-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workly-icon svg {
+  color: #000;
+}
+
+.workly-text {
+  flex: 1;
+}
+
+.workly-main-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  color: white;
+}
+
+.workly-main-text strong {
+  font-weight: 600;
+  color: #fff;
+  text-decoration: underline;
+}
+
+.workly-sub-text {
+  font-size: 12px;
+  opacity: 0.8;
+  font-weight: 400;
+  color: #ccc;
+}
+
+.workly-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: #999;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.workly-close:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Expanded Widget Styles */
+.workly-widget-expanded {
+  background: #000;
+  color: white;
+  width: 320px;
+  padding: 20px;
+  border-radius: 12px 0 0 12px;
+  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.workly-widget-expanded * {
+  box-sizing: border-box;
+}
+
+.workly-widget-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 12px;
+}
+
+.workly-widget-icon {
+  width: 28px;
+  height: 28px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding: 6px;
+  flex-shrink: 0;
+}
+
+.workly-widget-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2.5;
+}
+
+.workly-widget-brand {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.workly-widget-close {
+  background: transparent;
+  border: none;
+  color: #999;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.workly-widget-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.workly-widget-main {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: white;
+}
+
+.workly-widget-sub {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+.workly-widget-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.workly-widget-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+}
+
+.workly-widget-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.purchase-btn {
+  grid-column: 1 / -1;
+  background: white;
+  color: black;
+  border-color: white;
+  font-weight: 600;
+  justify-content: center;
+}
+
+.purchase-btn:hover {
+  background: #f2f2f2;
+  border-color: #f2f2f2;
+  transform: translateY(-1px);
+}
+
+/* Collapsed State Styles */
+.workly-collapsed {
+  width: 48px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 50% !important;
+  cursor: pointer;
+  overflow: visible !important;
+  height: 48px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 48px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  position: fixed !important;
+  top: 50% !important;
+  right: 60px !important;
+  z-index: 2147483647 !important;
+  transform: translateY(-50%) !important;
+}
+
+.workly-collapsed .workly-widget-header {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.workly-collapsed .workly-widget-icon {
+  width: 48px !important;
+  height: 48px !important;
+  background: #000 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  padding: 10px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+}
+
+.workly-collapsed .workly-widget-brand,
+.workly-collapsed .workly-widget-close,
+.workly-collapsed .workly-widget-main,
+.workly-collapsed .workly-widget-sub,
+.workly-collapsed .workly-widget-actions {
+  display: none !important;
+}
+
+.workly-collapsed:hover .workly-widget-icon {
+  transform: scale(1.1);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

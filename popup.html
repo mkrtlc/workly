@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workly Ayarları</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12,6 12,12 16,14"/>
+        </svg>
+        <h1>Workly</h1>
+      </div>
+      <div class="toggle-container">
+        <label class="toggle">
+          <input type="checkbox" id="enableToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Salary Type Tabs -->
+      <div class="tabs-container">
+        <div class="tabs">
+          <button class="tab-button active" data-tab="monthly">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Aylık
+          </button>
+          <button class="tab-button" data-tab="hourly">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+            Saatlik
+          </button>
+        </div>
+      </div>
+
+      <!-- Monthly Tab Content -->
+      <div class="tab-content active" id="monthly-tab">
+        <div class="setting-group">
+          <label for="monthlySalary" class="setting-label">
+            <span>Aylık Maaş</span>
+            <span class="setting-description">Vergi öncesi aylık maaşınız</span>
+          </label>
+          <div class="input-group">
+            <span class="input-prefix" id="currencyPrefixMonthly">₺</span>
+            <input type="number" id="monthlySalary" class="setting-input" value="25000" min="100" max="1000000" step="100">
+            <span class="input-suffix">/ay</span>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label for="workingHours" class="setting-label">
+            <span>Aylık Çalışma Saati</span>
+            <span class="setting-description">Bir ayda toplam çalıştığınız saat</span>
+          </label>
+          <div class="input-group">
+            <input type="number" id="workingHours" class="setting-input" value="160" min="40" max="300" step="1">
+            <span class="input-suffix">saat</span>
+          </div>
+        </div>
+
+        <div class="calculated-hourly">
+          <div class="calculated-label">Hesaplanan Saatlik Ücret:</div>
+          <div class="calculated-value" id="calculatedHourly">₺156.25/saat</div>
+        </div>
+      </div>
+
+      <!-- Hourly Tab Content -->
+      <div class="tab-content" id="hourly-tab">
+        <div class="setting-group">
+          <label for="hourlyWage" class="setting-label">
+            <span>Saatlik Ücret</span>
+            <span class="setting-description">Çalışma saatlerini hesaplamak için saatlik ücretiniz</span>
+          </label>
+          <div class="input-group">
+            <span class="input-prefix" id="currencyPrefix">₺</span>
+            <input type="number" id="hourlyWage" class="setting-input" value="150" min="1" max="10000" step="0.01">
+            <span class="input-suffix">/saat</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Currency Selection (Common for both tabs) -->
+      <div class="setting-group">
+        <label for="currency" class="setting-label">
+          <span>Para Birimi</span>
+          <span class="setting-description">Hesaplamalar için görüntüleme para birimi</span>
+        </label>
+        <select id="currency" class="setting-select">
+          <option value="TRY" selected>TRY (₺)</option>
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+          <option value="JPY">JPY (¥)</option>
+          <option value="CAD">CAD ($)</option>
+          <option value="AUD">AUD ($)</option>
+        </select>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-section">
+        <h3>Hızlı İstatistikler</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="dailyEarnings">₺1.200</div>
+            <div class="stat-label">Günlük (8 saat)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="weeklyEarnings">₺6.000</div>
+            <div class="stat-label">Haftalık (40 saat)</div>
+          </div>
+        </div>
+      </div>
+
+      <button id="saveSettings" class="save-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20,6 9,17 4,12"/>
+        </svg>
+        Ayarları Kaydet
+      </button>
+    </div>
+
+    <div class="footer">
+      <p>Workly bilinçli satın alma kararları vermenize yardımcı olur</p>
+    </div>
+  </div>
+
+  <script src="language.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
