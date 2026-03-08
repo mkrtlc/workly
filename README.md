@@ -1,12 +1,23 @@
-# Workly
+<p align="center">
+  <img src="https://lh3.googleusercontent.com/P5auOeYonbBUZKTVa6p7wQS41wBzqdDCpLUevnnLhRidaB6OY_MpBgI31sG0bus8vSPAXQYuJKYF6UOcV0jOmIcLOfE=s120" alt="Workly" width="120">
+</p>
 
-![GitHub stars](https://img.shields.io/github/stars/mkrtlc/workly?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/mkrtlc/workly?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/mkrtlc/workly?style=flat-square)
-![GitHub license](https://img.shields.io/github/license/mkrtlc/workly?style=flat-square)
-![GitHub contributors](https://img.shields.io/github/contributors/mkrtlc/workly?style=flat-square)
+<h1 align="center">Workly</h1>
 
-A Chrome extension that shows how many hours you need to work to afford the product you're looking at. Set your salary, browse any e-commerce site, and Workly will display the real cost of every item — in your time.
+<p align="center">
+  A Chrome extension that shows how many hours you need to work to afford the product you're looking at.<br>
+  Set your salary, browse any e-commerce site, and Workly will display the real cost of every item — in your time.
+</p>
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/v/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square&label=Chrome%20Web%20Store" alt="Chrome Web Store"></a>
+  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/users/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square" alt="Users"></a>
+  <img src="https://img.shields.io/github/stars/mkrtlc/workly?style=flat-square" alt="GitHub stars">
+  <img src="https://img.shields.io/github/forks/mkrtlc/workly?style=flat-square" alt="GitHub forks">
+  <img src="https://img.shields.io/github/issues/mkrtlc/workly?style=flat-square" alt="GitHub issues">
+  <img src="https://img.shields.io/github/license/mkrtlc/workly?style=flat-square" alt="GitHub license">
+  <img src="https://img.shields.io/github/contributors/mkrtlc/workly?style=flat-square" alt="GitHub contributors">
+</p>
 
 ## Features
 
@@ -39,6 +50,12 @@ A Chrome extension that shows how many hours you need to work to afford the prod
 Want to add support for a new site? See [Contributing](#contributing).
 
 ## Installation
+
+### Chrome Web Store (recommended)
+
+[**Install Workly**](https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm) from the Chrome Web Store.
+
+### From source (for development)
 
 1. Clone this repository:
    ```bash
