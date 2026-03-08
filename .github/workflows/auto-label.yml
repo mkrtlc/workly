@@ -1,0 +1,198 @@
+name: Auto Label
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  label-pr:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const labels = new Set();
+
+            // Get changed files
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+
+            const changedFiles = files.map(f => f.filename);
+
+            // Label based on changed files
+            if (changedFiles.some(f => f.startsWith('parsers/') && f !== 'parsers/base.js')) {
+              // Check if it's a new parser or fixing existing one
+              const newParsers = files.filter(f => f.filename.startsWith('parsers/') && f.status === 'added');
+              if (newParsers.length > 0) {
+                labels.add('new parser');
+              } else {
+                labels.add('parser fix');
+              }
+            }
+
+            if (changedFiles.includes('language.js')) {
+              labels.add('translation');
+            }
+
+            if (changedFiles.some(f => f.startsWith('dashboard'))) {
+              labels.add('dashboard');
+            }
+
+            if (changedFiles.includes('widget.js') || changedFiles.includes('content.css')) {
+              labels.add('widget');
+            }
+
+            if (changedFiles.includes('popup.html') || changedFiles.includes('popup.js') || changedFiles.includes('popup.css')) {
+              labels.add('popup');
+            }
+
+            if (changedFiles.includes('manifest.json')) {
+              labels.add('manifest');
+            }
+
+            if (changedFiles.includes('purchase.js')) {
+              labels.add('purchases');
+            }
+
+            if (changedFiles.includes('currency.js')) {
+              labels.add('currency');
+            }
+
+            if (changedFiles.some(f => f.endsWith('.md'))) {
+              labels.add('documentation');
+            }
+
+            if (labels.size === 0) {
+              labels.add('other');
+            }
+
+            // Ensure labels exist, then apply
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label
+                });
+              } catch {
+                const colors = {
+                  'new parser': '0E8A16',
+                  'parser fix': 'FBCA04',
+                  'translation': '1D76DB',
+                  'dashboard': 'D93F0B',
+                  'widget': 'BFD4F2',
+                  'popup': 'C5DEF5',
+                  'manifest': 'F9D0C4',
+                  'purchases': 'E99695',
+                  'currency': 'FEF2C0',
+                  'documentation': '0075CA',
+                  'other': 'EDEDED'
+                };
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: colors[label] || 'EDEDED'
+                });
+              }
+            }
+
+            if (labels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: [...labels]
+              });
+            }
+
+  label-issue:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || '').toLowerCase();
+            const text = title + ' ' + body;
+            const labels = new Set();
+
+            // Detect issue type from content
+            if (text.includes('bug') || text.includes('broken') || text.includes('not working') || text.includes('error') || text.includes('crash')) {
+              labels.add('bug');
+            }
+
+            if (text.includes('feature') || text.includes('add support') || text.includes('would be nice') || text.includes('suggestion')) {
+              labels.add('enhancement');
+            }
+
+            if (text.includes('parser') || text.includes('selector') || text.includes('price not detected') || text.includes('price detection')) {
+              labels.add('parser');
+            }
+
+            // Detect site mentions
+            const sites = ['amazon', 'ebay', 'etsy', 'trendyol', 'hepsiburada', 'n11', 'walmart', 'aliexpress', 'shopify'];
+            for (const site of sites) {
+              if (text.includes(site)) {
+                labels.add('parser');
+                break;
+              }
+            }
+
+            if (text.includes('dashboard')) {
+              labels.add('dashboard');
+            }
+
+            if (text.includes('language') || text.includes('translation') || text.includes('translate')) {
+              labels.add('translation');
+            }
+
+            // Ensure labels exist, then apply
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label
+                });
+              } catch {
+                const colors = {
+                  'bug': 'D73A4A',
+                  'enhancement': 'A2EEEF',
+                  'parser': '0E8A16',
+                  'dashboard': 'D93F0B',
+                  'translation': '1D76DB'
+                };
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: colors[label] || 'EDEDED'
+                });
+              }
+            }
+
+            if (labels.size > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: [...labels]
+              });
+            }

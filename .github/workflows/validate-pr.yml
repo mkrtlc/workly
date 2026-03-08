@@ -1,0 +1,115 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate manifest.json
+        run: |
+          echo "Checking manifest.json is valid JSON..."
+          jq empty manifest.json || { echo "manifest.json is not valid JSON"; exit 1; }
+
+          echo "Checking required manifest fields..."
+          jq -e '.manifest_version' manifest.json > /dev/null || { echo "Missing manifest_version"; exit 1; }
+          jq -e '.name' manifest.json > /dev/null || { echo "Missing name"; exit 1; }
+          jq -e '.version' manifest.json > /dev/null || { echo "Missing version"; exit 1; }
+
+          echo "Checking version format (x.y.z)..."
+          VERSION=$(jq -r '.version' manifest.json)
+          if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Invalid version format: $VERSION (expected x.y.z)"
+            exit 1
+          fi
+
+          echo "manifest.json is valid"
+
+      - name: Check all content script files exist
+        run: |
+          echo "Checking content script files..."
+          for file in $(jq -r '.content_scripts[0].js[]' manifest.json); do
+            if [ ! -f "$file" ]; then
+              echo "Missing content script: $file"
+              exit 1
+            fi
+            echo "  $file exists"
+          done
+
+          for file in $(jq -r '.content_scripts[0].css[]' manifest.json); do
+            if [ ! -f "$file" ]; then
+              echo "Missing CSS file: $file"
+              exit 1
+            fi
+            echo "  $file exists"
+          done
+          echo "All content script files exist"
+
+      - name: Validate parsers extend PriceParser
+        run: |
+          echo "Checking parser structure..."
+          ERRORS=0
+          for file in parsers/*.js; do
+            BASENAME=$(basename "$file")
+            if [ "$BASENAME" = "base.js" ]; then
+              continue
+            fi
+
+            # Check that parser extends PriceParser
+            if ! grep -q "extends PriceParser" "$file"; then
+              echo "ERROR: $file does not extend PriceParser"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            # Check required methods
+            if ! grep -q "isMatch" "$file"; then
+              echo "ERROR: $file is missing isMatch() method"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            if ! grep -q "parse" "$file"; then
+              echo "ERROR: $file is missing parse() method"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            echo "  $BASENAME - OK"
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo "$ERRORS error(s) found"
+            exit 1
+          fi
+          echo "All parsers are valid"
+
+      - name: Check for accidental secrets or sensitive files
+        run: |
+          ERRORS=0
+          for pattern in ".env" "credentials" "*.pem" "*.key"; do
+            found=$(find . -name "$pattern" -not -path "./.git/*" 2>/dev/null)
+            if [ -n "$found" ]; then
+              echo "ERROR: Potentially sensitive file found: $found"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo "Please remove sensitive files before merging"
+            exit 1
+          fi
+          echo "No sensitive files found"
+
+      - name: Check extension zip size
+        run: |
+          zip -r /tmp/workly-check.zip . \
+            -x ".git/*" ".github/*" "screenshots/*" "*.md" ".gitignore" ".DS_Store" "**/.DS_Store" \
+            -x "package.json" "package-lock.json" "create-icons.html" "icons/logo.png" "log.txt" "build.sh" "workly_v*"
+          SIZE=$(du -k /tmp/workly-check.zip | cut -f1)
+          echo "Extension zip size: ${SIZE}KB"
+          # Chrome Web Store limit is ~50MB, warn if over 5MB
+          if [ "$SIZE" -gt 5120 ]; then
+            echo "WARNING: Extension zip is over 5MB (${SIZE}KB). Consider optimizing assets."
+          fi
