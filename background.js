@@ -5,7 +5,6 @@ class WorklyBackground {
   }
 
   init() {
-    // Handle extension installation
     chrome.runtime.onInstalled.addListener((details) => {
       if (details.reason === 'install') {
         this.handleInstall();
@@ -14,13 +13,11 @@ class WorklyBackground {
       }
     });
 
-    // Handle messages from content scripts and popup
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       this.handleMessage(request, sender, sendResponse);
-      return true; // Keep the message channel open for async responses
+      return true;
     });
 
-    // Handle tab updates to refresh content scripts when needed
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       if (changeInfo.status === 'complete' && tab.url) {
         this.handleTabUpdate(tabId, tab);
@@ -29,21 +26,18 @@ class WorklyBackground {
   }
 
   async handleInstall() {
-    // Set default settings with both hourly and monthly options
     const defaultSettings = {
       hourlyWage: 15,
       monthlySalary: 35000,
       workingHours: 160,
       currency: 'USD',
       isActive: true,
-      salaryType: 'hourly' // 'hourly' or 'monthly'
+      salaryType: 'hourly'
     };
 
     try {
       await chrome.storage.sync.set(defaultSettings);
       console.log('Workly installed with default settings');
-
-      // Optionally open the popup or a welcome page
       this.showWelcomeNotification();
     } catch (error) {
       console.error('Error setting default settings:', error);
@@ -51,33 +45,36 @@ class WorklyBackground {
   }
 
   handleUpdate() {
-    console.log('Workly extension updated');
-    // Handle any migration logic here if needed
+    console.log('Workly extension updated to v1.2.0');
   }
 
   async handleMessage(request, sender, sendResponse) {
     try {
       switch (request.action) {
-        case 'getSettings':
+        case 'getSettings': {
           const settings = await chrome.storage.sync.get([
-            'hourlyWage',
-            'monthlySalary',
-            'workingHours',
-            'currency',
-            'isActive',
-            'salaryType'
+            'hourlyWage', 'monthlySalary', 'workingHours',
+            'currency', 'isActive', 'salaryType'
           ]);
           sendResponse({ success: true, data: settings });
           break;
+        }
 
         case 'updateSettings':
           await chrome.storage.sync.set(request.settings);
           sendResponse({ success: true });
           break;
 
+        case 'setBadge':
+          // Update extension badge with work hours for current tab
+          if (sender.tab?.id) {
+            this.updateBadge(sender.tab.id, request.hours);
+          }
+          sendResponse({ success: true });
+          break;
+
         case 'logPrice':
-          // Log price detection for analytics (optional)
-          console.log('Price detected:', request.price, 'on', sender.tab.url);
+          console.log('Price detected:', request.price, 'on', sender.tab?.url);
           sendResponse({ success: true });
           break;
 
@@ -95,14 +92,37 @@ class WorklyBackground {
     }
   }
 
+  updateBadge(tabId, hours) {
+    if (!hours || hours <= 0) {
+      chrome.action.setBadgeText({ text: '', tabId });
+      return;
+    }
+
+    const numHours = parseFloat(hours);
+    let badgeText;
+
+    if (numHours < 1) {
+      badgeText = `${Math.round(numHours * 60)}m`;
+    } else if (numHours >= 100) {
+      badgeText = `${Math.round(numHours)}h`;
+    } else {
+      badgeText = `${numHours.toFixed(1)}h`;
+    }
+
+    chrome.action.setBadgeText({ text: badgeText, tabId });
+    chrome.action.setBadgeBackgroundColor({ color: '#000000', tabId });
+    chrome.action.setBadgeTextColor({ color: '#FFFFFF', tabId });
+  }
+
   async handleTabUpdate(tabId, tab) {
-    // Check if the tab URL matches ecommerce patterns
+    // Clear badge when navigating
+    chrome.action.setBadgeText({ text: '', tabId });
+
     if (this.isEcommerceUrl(tab.url)) {
-      // Optionally inject content script or send a message
       try {
         await chrome.tabs.sendMessage(tabId, { action: 'pageUpdated' });
       } catch (error) {
-        // Content script might not be ready yet, which is fine
+        // Content script might not be ready yet
       }
     }
   }
@@ -111,37 +131,26 @@ class WorklyBackground {
     if (!url) return false;
 
     const ecommercePatterns = [
-      /amazon\./,
-      /ebay\./,
-      /etsy\./,
-      /shopify\./,
-      /shop\./,
-      /store\./,
-      /buy\./,
-      /cart\./,
-      /checkout\./,
-      /product\//,
-      /item\//,
-      /p\//,
-      /trendyol\./,
-      /hepsiburada\./
+      /amazon\./, /ebay\./, /etsy\./, /shopify\./,
+      /trendyol\./, /hepsiburada\./, /n11\./,
+      /shop\./, /store\./, /buy\./, /cart\./,
+      /product\//, /item\//, /\/p\//, /\/dp\//,
+      /listing\//, /urun\//
     ];
 
     return ecommercePatterns.some(pattern => pattern.test(url));
   }
 
   showWelcomeNotification() {
-    // Create a simple notification for new users
     if (chrome.notifications) {
       chrome.notifications.create('workly-welcome', {
         type: 'basic',
         iconUrl: 'icons/icon48.png',
         title: 'Welcome to Workly!',
-        message: 'Workly will help you calculate work hours needed for purchases. Click the extension icon to customize your hourly wage or monthly salary.'
+        message: 'Click the extension icon to set your salary and start seeing how many work hours products cost.'
       });
     }
   }
 }
 
-// Initialize the background script
 new WorklyBackground();

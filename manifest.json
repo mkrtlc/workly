@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Workly",
-  "version": "1.1.0",
-  "description": "Trendyol, Hepsiburada, Amazon ve diğer sitelerde gördüğünüz ürünlerin emek karşılığını hesaplayın.",
+  "version": "1.2.0",
+  "description": "Calculate how many hours you need to work to afford any product online.",
   "permissions": [
     "storage"
   ],
@@ -16,11 +16,18 @@
       ],
       "js": [
         "language.js",
+        "currency.js",
         "parsers/base.js",
         "parsers/trendyol.js",
         "parsers/hepsiburada.js",
         "parsers/amazon.js",
+        "parsers/n11.js",
+        "parsers/ebay.js",
+        "parsers/etsy.js",
         "parsers/generic.js",
+        "widget.js",
+        "purchase.js",
+        "settings-modal.js",
         "content.js"
       ],
       "css": [
@@ -48,10 +55,6 @@
         "icons/*"
       ],
       "matches": [
-        "*://*.trendyol.com/*",
-        "*://*.hepsiburada.com/*",
-        "*://*.amazon.com.tr/*",
-        "*://*.amazon.com/*",
         "<all_urls>"
       ]
     }

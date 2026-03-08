@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Workly Ayarları</title>
+  <title>Workly</title>
   <link rel="stylesheet" href="popup.css">
+  <style>
+    /* Hide content until localized to prevent flash of untranslated text */
+    .content, .footer { visibility: hidden; }
+    .content.localized, .footer.localized { visibility: visible; }
+  </style>
 </head>
 <body>
   <div class="popup-container">
@@ -35,14 +40,14 @@
               <line x1="8" y1="2" x2="8" y2="6"/>
               <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
-            Aylık
+            <span data-i18n="monthly"></span>
           </button>
           <button class="tab-button" data-tab="hourly">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12,6 12,12 16,14"/>
             </svg>
-            Saatlik
+            <span data-i18n="hourly"></span>
           </button>
         </div>
       </div>
@@ -51,30 +56,30 @@
       <div class="tab-content active" id="monthly-tab">
         <div class="setting-group">
           <label for="monthlySalary" class="setting-label">
-            <span>Aylık Maaş</span>
-            <span class="setting-description">Vergi öncesi aylık maaşınız</span>
+            <span data-i18n="monthlySalary"></span>
+            <span class="setting-description" data-i18n="monthlySalaryDesc"></span>
           </label>
           <div class="input-group">
-            <span class="input-prefix" id="currencyPrefixMonthly">₺</span>
+            <span class="input-prefix" id="currencyPrefixMonthly"></span>
             <input type="number" id="monthlySalary" class="setting-input" value="25000" min="100" max="1000000" step="100">
-            <span class="input-suffix">/ay</span>
+            <span class="input-suffix" data-i18n-suffix="month"></span>
           </div>
         </div>
 
         <div class="setting-group">
           <label for="workingHours" class="setting-label">
-            <span>Aylık Çalışma Saati</span>
-            <span class="setting-description">Bir ayda toplam çalıştığınız saat</span>
+            <span data-i18n="workingHours"></span>
+            <span class="setting-description" data-i18n="workingHoursDesc"></span>
           </label>
           <div class="input-group">
             <input type="number" id="workingHours" class="setting-input" value="160" min="40" max="300" step="1">
-            <span class="input-suffix">saat</span>
+            <span class="input-suffix" data-i18n-suffix="hours"></span>
           </div>
         </div>
 
         <div class="calculated-hourly">
-          <div class="calculated-label">Hesaplanan Saatlik Ücret:</div>
-          <div class="calculated-value" id="calculatedHourly">₺156.25/saat</div>
+          <div class="calculated-label" data-i18n="calculatedHourlyRate"></div>
+          <div class="calculated-value" id="calculatedHourly"></div>
         </div>
       </div>
 
@@ -82,29 +87,29 @@
       <div class="tab-content" id="hourly-tab">
         <div class="setting-group">
           <label for="hourlyWage" class="setting-label">
-            <span>Saatlik Ücret</span>
-            <span class="setting-description">Çalışma saatlerini hesaplamak için saatlik ücretiniz</span>
+            <span data-i18n="hourlyWage"></span>
+            <span class="setting-description" data-i18n="hourlyWageDesc"></span>
           </label>
           <div class="input-group">
-            <span class="input-prefix" id="currencyPrefix">₺</span>
+            <span class="input-prefix" id="currencyPrefix"></span>
             <input type="number" id="hourlyWage" class="setting-input" value="150" min="1" max="10000" step="0.01">
-            <span class="input-suffix">/saat</span>
+            <span class="input-suffix" data-i18n-suffix="hour"></span>
           </div>
         </div>
       </div>
 
-      <!-- Currency Selection (Common for both tabs) -->
+      <!-- Currency Selection -->
       <div class="setting-group">
         <label for="currency" class="setting-label">
-          <span>Para Birimi</span>
-          <span class="setting-description">Hesaplamalar için görüntüleme para birimi</span>
+          <span data-i18n="currency"></span>
+          <span class="setting-description" data-i18n="currencyDesc"></span>
         </label>
         <select id="currency" class="setting-select">
-          <option value="TRY" selected>TRY (₺)</option>
+          <option value="TRY">TRY</option>
           <option value="USD">USD ($)</option>
-          <option value="EUR">EUR (€)</option>
-          <option value="GBP">GBP (£)</option>
-          <option value="JPY">JPY (¥)</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="JPY">JPY</option>
           <option value="CAD">CAD ($)</option>
           <option value="AUD">AUD ($)</option>
         </select>
@@ -112,15 +117,15 @@
 
       <!-- Stats Section -->
       <div class="stats-section">
-        <h3>Hızlı İstatistikler</h3>
+        <h3 data-i18n="quickStats"></h3>
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-value" id="dailyEarnings">₺1.200</div>
-            <div class="stat-label">Günlük (8 saat)</div>
+            <div class="stat-value" id="dailyEarnings"></div>
+            <div class="stat-label" data-i18n="daily"></div>
           </div>
           <div class="stat-item">
-            <div class="stat-value" id="weeklyEarnings">₺6.000</div>
-            <div class="stat-label">Haftalık (40 saat)</div>
+            <div class="stat-value" id="weeklyEarnings"></div>
+            <div class="stat-label" data-i18n="weekly"></div>
           </div>
         </div>
       </div>
@@ -129,12 +134,12 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="20,6 9,17 4,12"/>
         </svg>
-        Ayarları Kaydet
+        <span data-i18n="saveSettings"></span>
       </button>
     </div>
 
     <div class="footer">
-      <p>Workly bilinçli satın alma kararları vermenize yardımcı olur</p>
+      <p data-i18n="footerText"></p>
     </div>
   </div>
 
