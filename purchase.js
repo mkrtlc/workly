@@ -17,8 +17,9 @@ class PurchaseTracker {
       id: Date.now(),
       date: new Date().toISOString(),
       price: price,
-      currency: workData.currency,
+      currency: workData.priceCurrency || workData.currency,
       costHours: parseFloat(workData.hours),
+      url: window.location.href,
       domain: window.location.hostname,
       title: document.title
     };
@@ -56,12 +57,13 @@ class PurchaseTracker {
 
     const lang = this.langManager.getCurrentLanguage();
     const headers = lang === 'tr'
-      ? ['Tarih', 'Site', 'Urun', 'Fiyat', 'Para Birimi', 'Saat']
-      : ['Date', 'Site', 'Item', 'Price', 'Currency', 'Hours'];
+      ? ['Tarih', 'Site', 'URL', 'Urun', 'Fiyat', 'Para Birimi', 'Saat']
+      : ['Date', 'Site', 'URL', 'Item', 'Price', 'Currency', 'Hours'];
 
     const rows = purchases.map(p => [
       new Date(p.date).toLocaleDateString(),
       p.domain,
+      `"${(p.url || '').replace(/"/g, '""')}"`,
       `"${(p.title || '').replace(/"/g, '""')}"`,
       p.price,
       p.currency,
@@ -111,10 +113,13 @@ class PurchaseTracker {
     return purchases.map(p => {
       const date = new Date(p.date).toLocaleDateString();
       const symbol = this.getCurrencySymbol(p.currency);
+      const titleHTML = p.url
+        ? `<a class="history-title" href="${p.url}" target="_blank" title="${p.title}">${p.title}</a>`
+        : `<div class="history-title" title="${p.title}">${p.title}</div>`;
       return `
         <div class="history-item">
           <div class="history-details">
-            <div class="history-title" title="${p.title}">${p.title}</div>
+            ${titleHTML}
             <div class="history-meta">
               <span>${date}</span>
               <span>\u2022</span>

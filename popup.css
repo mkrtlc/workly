@@ -347,6 +347,23 @@ input:checked + .slider:before {
   color: #999;
 }
 
+.dashboard-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.dashboard-link:hover {
+  color: #000;
+}
+
 /* Animations */
 @keyframes slideIn {
   from {

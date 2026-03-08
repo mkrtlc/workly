@@ -377,6 +377,31 @@
   line-height: 1.5;
 }
 
+.workly-details-panel {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+
+.workly-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 13px;
+  color: #ddd;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.workly-detail-row:last-child {
+  border-bottom: none;
+}
+
+.workly-detail-row span:last-child {
+  font-weight: 600;
+  color: #fff;
+}
+
 .workly-widget-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -424,31 +449,41 @@
 /* Collapsed State Styles */
 .workly-collapsed {
   width: 48px !important;
+  height: 48px !important;
   padding: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
   border-radius: 50% !important;
+  border-top-right-radius: 50% !important;
+  border-bottom-right-radius: 50% !important;
   cursor: pointer;
   overflow: visible !important;
-  height: 48px !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  height: 48px !important;
   min-width: 0 !important;
   min-height: 0 !important;
   position: fixed !important;
   top: 50% !important;
-  right: 60px !important;
+  right: 12px !important;
   z-index: 2147483647 !important;
   transform: translateY(-50%) !important;
+  max-width: 48px !important;
+}
+
+.workly-collapsed .workly-widget-expanded {
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  gap: 0 !important;
 }
 
 .workly-collapsed .workly-widget-header {
   border: none !important;
   padding: 0 !important;
   margin: 0 !important;
-  width: 100%;
-  height: 100%;
+  width: 48px;
+  height: 48px;
 }
 
 .workly-collapsed .workly-widget-icon {
@@ -456,11 +491,17 @@
   height: 48px !important;
   background: #000 !important;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-  padding: 10px !important;
+  padding: 12px !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
   margin: 0 !important;
+  border-radius: 50% !important;
+}
+
+.workly-collapsed .workly-widget-icon svg {
+  color: white !important;
+  stroke: white !important;
 }
 
 .workly-collapsed .workly-widget-brand,

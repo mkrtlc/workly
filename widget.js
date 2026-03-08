@@ -6,6 +6,7 @@ class WorklyWidget {
     this.currentWidgetData = null;
     this.onSettingsClick = null;
     this.onPurchaseClick = null;
+    this._collapsed = false;
   }
 
   getCurrencySymbol(currency) {
@@ -17,6 +18,7 @@ class WorklyWidget {
   }
 
   create(price, workData, savings) {
+    if (this._collapsed) return;
     this.remove();
 
     const currencySymbol = this.getCurrencySymbol(workData.currency);
@@ -59,8 +61,8 @@ class WorklyWidget {
   }
 
   remove() {
-    const existing = document.getElementById('workly-embedded-widget');
-    if (existing) existing.remove();
+    // Clean up any stale widgets by ID
+    document.querySelectorAll('#workly-fixed-widget').forEach(el => el.remove());
     if (this.worklyDiv) {
       this.worklyDiv.remove();
       this.worklyDiv = null;
@@ -69,13 +71,18 @@ class WorklyWidget {
 
   collapse() {
     if (this.worklyDiv) {
+      this._collapsed = true;
+      // Clear inline styles so collapsed CSS can take over positioning
+      this.worklyDiv.style.cssText = '';
       this.worklyDiv.classList.add('workly-collapsed');
     }
   }
 
   expand() {
     if (this.worklyDiv) {
+      this._collapsed = false;
       this.worklyDiv.classList.remove('workly-collapsed');
+      this.worklyDiv.style.cssText = this._getPositionStyles();
     }
   }
 
@@ -86,25 +93,43 @@ class WorklyWidget {
   }
 
   showDetails() {
-    if (!this.currentWidgetData) return;
+    if (!this.currentWidgetData || !this.worklyDiv) return;
+
+    const panel = this.worklyDiv.querySelector('.workly-details-panel');
+    if (!panel) return;
+
+    // Toggle visibility
+    const isVisible = panel.style.display === 'block';
+    panel.style.display = isVisible ? 'none' : 'block';
+    if (isVisible) return;
+
     const { workData, savings, price } = this.currentWidgetData;
     const symbol = this.getCurrencySymbol(workData.currency);
-
     const lang = this.langManager.getCurrentLanguage();
-    const lines = [
-      lang === 'tr' ? `Fiyat: ${symbol}${price}` : `Price: ${symbol}${price}`,
-      lang === 'tr' ? `Gereken Saat: ${workData.hours}` : `Work Hours Needed: ${workData.hours}`,
-      lang === 'tr' ? `Saatlik: ${symbol}${workData.wage.toFixed(2)}` : `Hourly Wage: ${symbol}${workData.wage.toFixed(2)}`
-    ];
+
+    let html = `
+      <div class="workly-detail-row">
+        <span>${lang === 'tr' ? 'Fiyat' : 'Price'}</span>
+        <span>${symbol}${Number(price).toLocaleString()}</span>
+      </div>
+      <div class="workly-detail-row">
+        <span>${lang === 'tr' ? 'Gereken Saat' : 'Work Hours'}</span>
+        <span>${workData.hours}h</span>
+      </div>
+      <div class="workly-detail-row">
+        <span>${lang === 'tr' ? 'Saatlik Ücret' : 'Hourly Wage'}</span>
+        <span>${symbol}${workData.wage.toFixed(2)}</span>
+      </div>`;
 
     if (savings) {
-      lines.push(lang === 'tr'
-        ? `\nTasarruf: ${symbol}${savings.amount.toFixed(2)} (${savings.hours}h)`
-        : `\nSavings: ${symbol}${savings.amount.toFixed(2)} (${savings.hours}h saved)`
-      );
+      html += `
+      <div class="workly-detail-row">
+        <span>${lang === 'tr' ? 'Tasarruf' : 'Savings'}</span>
+        <span>${symbol}${savings.amount.toFixed(2)} (${savings.hours}h)</span>
+      </div>`;
     }
 
-    console.log('Workly Details:', lines.join('\n'));
+    panel.innerHTML = html;
   }
 
   _getHTML() {
@@ -128,6 +153,7 @@ class WorklyWidget {
       </div>
       <div class="workly-widget-main">${mainText}</div>
       <div class="workly-widget-sub">${subText}</div>
+      <div class="workly-details-panel" style="display:none;"></div>
       <div class="workly-widget-actions">
         <button class="workly-widget-btn settings-btn">\u2699\uFE0F ${settingsLabel}</button>
         <button class="workly-widget-btn details-btn">\uD83D\uDCCA ${detailsLabel}</button>

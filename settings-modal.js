@@ -27,6 +27,7 @@ class SettingsModal {
 
     const container = document.createElement('div');
     container.className = 'modal-overlay';
+    container.setAttribute('lang', 'en');
     container.innerHTML = `
       <style>${this._getCSS()}</style>
       <div class="modal-wrapper">
@@ -430,7 +431,8 @@ class SettingsModal {
       .history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fafafa; border: 1px solid #eee; border-radius: 6px; transition: all 0.2s; }
       .history-item:hover { border-color: #ddd; background: #f5f5f5; }
       .history-details { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
-      .history-title { font-size: 13px; font-weight: 500; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .history-title { font-size: 13px; font-weight: 500; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: none; display: block; }
+      a.history-title:hover { color: #000; text-decoration: underline; }
       .history-meta { font-size: 11px; color: #666; display: flex; gap: 8px; }
       .history-cost { font-weight: 600; color: #000; font-size: 13px; margin: 0 12px; white-space: nowrap; }
       .history-delete { background: transparent; border: none; color: #999; cursor: pointer; padding: 6px; border-radius: 4px; display: flex; align-items: center; }

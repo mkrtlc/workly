@@ -5,27 +5,29 @@ class LanguageManager {
     this.fallbackLanguage = 'en';
   }
 
-  // Detect language prioritizing website language over user preference
+  // Detect language: browser language first, then page content for content scripts
   detectLanguage() {
-    // First priority: Try to detect from page content/website
-    const pageLanguage = this.detectPageLanguage();
-    if (pageLanguage && this.translations[pageLanguage]) {
-      return pageLanguage;
+    // For extension pages (popup, options), use browser language only
+    const isExtensionPage = window.location.protocol === 'chrome-extension:';
+
+    // First priority: Browser language preference
+    const browserLang = (navigator.language || navigator.userLanguage || '').split('-')[0].toLowerCase();
+    if (browserLang && this.translations[browserLang]) {
+      return browserLang;
     }
 
-    // Second priority: Try to get language from browser settings
-    const browserLang = navigator.language || navigator.userLanguage;
-    const langCode = browserLang.split('-')[0].toLowerCase();
-
-    // Check if we support this language
-    if (this.translations[langCode]) {
-      return langCode;
+    // Second priority (content scripts only): Detect from page content
+    if (!isExtensionPage) {
+      const pageLanguage = this.detectPageLanguage();
+      if (pageLanguage && this.translations[pageLanguage]) {
+        return pageLanguage;
+      }
     }
 
     return this.fallbackLanguage;
   }
 
-  // Detect language from the current page
+  // Detect language from the current web page
   detectPageLanguage() {
     // Check HTML lang attribute
     const htmlLang = document.documentElement.lang;
@@ -37,7 +39,7 @@ class LanguageManager {
     }
 
     // Check for Turkish-specific indicators
-    const pageText = document.body.textContent.toLowerCase();
+    const pageText = (document.body?.textContent || '').toLowerCase();
     const turkishIndicators = ['tl', '₺', 'türk', 'sepet', 'ücretsiz', 'kargo', 'indirim', 'satın'];
     const turkishCount = turkishIndicators.filter(indicator => pageText.includes(indicator)).length;
 
@@ -113,6 +115,7 @@ class LanguageManager {
       weekly: "Weekly (40 hours)",
       saveSettings: "Save Settings",
       footerText: "Workly helps you make informed purchasing decisions",
+      viewDashboard: "View Dashboard",
       reflectionMessages: [
         "Is it worth the time? The choice is yours.",
         "Is this purchase worth the freedom you traded for it?",
@@ -208,6 +211,7 @@ class LanguageManager {
       weekly: "Haftalık (40 saat)",
       saveSettings: "Ayarları Kaydet",
       footerText: "Workly bilinçli satın alma kararları vermenize yardımcı olur",
+      viewDashboard: "Kontrol Paneli",
       reflectionMessages: [
         "Hayatından giden zamana değer mi? Karar senin.",
         "Bu harcama özgürlüğünden çaldığın zamana değer mi?",

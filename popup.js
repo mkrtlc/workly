@@ -121,6 +121,11 @@ class WorklyPopup {
       this.debounceAutoSave();
     });
 
+    // Dashboard link
+    document.getElementById('openDashboard')?.addEventListener('click', () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
+    });
+
     // Validate on blur
     this.elements.hourlyWage.addEventListener('blur', () => {
       if (isNaN(parseFloat(this.elements.hourlyWage.value)) || parseFloat(this.elements.hourlyWage.value) <= 0) {

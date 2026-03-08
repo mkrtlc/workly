@@ -52,7 +52,10 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "icons/*"
+        "icons/*",
+        "dashboard.html",
+        "dashboard.css",
+        "dashboard.js"
       ],
       "matches": [
         "<all_urls>"

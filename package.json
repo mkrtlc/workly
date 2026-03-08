@@ -2,7 +2,11 @@
   "name": "workly-chrome-extension",
   "version": "1.0.0",
   "description": "Calculate work hours needed to buy products online",
-  "private": true,
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mkrtlc/workly"
+  },
   "scripts": {
     "build": "echo 'Chrome extension ready for loading'",
     "dev": "echo 'Load extension in Chrome developer mode'"

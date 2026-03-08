@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workly Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="dashboard">
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+          </svg>
+          <h1>Workly</h1>
+        </div>
+        <span class="header-divider"></span>
+        <span class="header-subtitle">Dashboard</span>
+      </div>
+      <div class="header-actions">
+        <button id="exportCsv" class="btn btn-outline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export CSV
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- Summary Cards -->
+      <section class="summary-cards">
+        <div class="card">
+          <div class="card-value" id="totalPurchases">0</div>
+          <div class="card-label">Total Purchases</div>
+        </div>
+        <div class="card">
+          <div class="card-value" id="totalHours">0</div>
+          <div class="card-label">Total Work Hours</div>
+        </div>
+        <div class="card">
+          <div class="card-value" id="monthHours">0</div>
+          <div class="card-label">This Month</div>
+        </div>
+        <div class="card">
+          <div class="card-value" id="avgHours">0</div>
+          <div class="card-label">Avg Hours / Purchase</div>
+        </div>
+      </section>
+
+      <!-- Monthly Chart -->
+      <section class="chart-section">
+        <div class="section-header">
+          <h2>Monthly Overview</h2>
+          <span class="section-hint">Work hours spent per month</span>
+        </div>
+        <div class="chart-container" id="chartContainer">
+          <div class="chart-empty">No data yet</div>
+        </div>
+      </section>
+
+      <!-- Purchase History -->
+      <section class="history-section">
+        <div class="section-header">
+          <h2>Purchase History</h2>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search purchases...">
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="purchases-table" id="purchasesTable">
+            <thead>
+              <tr>
+                <th data-sort="date" class="sortable sorted-desc">
+                  Date
+                  <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                    <polyline points="6,9 12,15 18,9"/>
+                  </svg>
+                </th>
+                <th data-sort="title" class="sortable">Item</th>
+                <th data-sort="domain" class="sortable">Site</th>
+                <th data-sort="price" class="sortable th-right">Price</th>
+                <th data-sort="costHours" class="sortable th-right">Work Hours</th>
+                <th class="th-center" width="60"></th>
+              </tr>
+            </thead>
+            <tbody id="purchasesBody">
+            </tbody>
+          </table>
+          <div class="empty-state" id="emptyState">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+            <p>No purchases yet</p>
+            <span>Your purchase history will appear here</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Workly helps you make informed purchasing decisions</p>
+    </footer>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

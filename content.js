@@ -8,6 +8,8 @@ class WorklyCalculator {
     this.isActive = false;
     this.salaryType = 'hourly';
     this.observerActive = false;
+    this._updating = false;
+    this._debounceTimer = null;
 
     this.langManager = new LanguageManager();
     this.widget = new WorklyWidget(this.langManager);
@@ -61,9 +63,19 @@ class WorklyCalculator {
     if (this.observerActive) return;
 
     const observer = new MutationObserver(() => {
-      if (!this.widget.worklyDiv || !document.contains(this.widget.worklyDiv)) {
-        this._detectAndShow();
-      }
+      // Skip if we're in the middle of creating/removing a widget
+      if (this._updating) { return; }
+
+      // Widget still in DOM (even if collapsed) — nothing to do
+      if (this.widget.worklyDiv && document.contains(this.widget.worklyDiv)) return;
+
+      // Widget was removed externally (SPA navigation) — reset collapsed state
+      this.widget._collapsed = false;
+      this.widget.worklyDiv = null;
+
+      // Debounce to avoid rapid-fire on dynamic pages
+      clearTimeout(this._debounceTimer);
+      this._debounceTimer = setTimeout(() => this._detectAndShow(), 500);
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
@@ -71,17 +83,25 @@ class WorklyCalculator {
   }
 
   async _detectAndShow() {
-    const priceData = this._extractPrice();
-    if (!priceData || priceData.price <= 0) return;
+    clearTimeout(this._debounceTimer);
+    if (this._updating) return;
+    this._updating = true;
 
-    const workData = await this._calculateWorkHours(priceData.price, priceData.currency);
-    const savings = null; // parsers don't provide original price yet
-    this.widget.create(priceData.price, workData, savings);
-
-    // Update extension badge with work hours
     try {
-      chrome.runtime.sendMessage({ action: 'setBadge', hours: workData.hours });
-    } catch (e) { /* ignore */ }
+      const priceData = this._extractPrice();
+      if (!priceData || priceData.price <= 0) return;
+
+      const workData = await this._calculateWorkHours(priceData.price, priceData.currency);
+      const savings = null;
+      this.widget.create(priceData.price, workData, savings);
+
+      // Update extension badge
+      try {
+        chrome.runtime.sendMessage({ action: 'setBadge', hours: workData.hours });
+      } catch (e) { /* ignore */ }
+    } finally {
+      this._updating = false;
+    }
   }
 
   _extractPrice() {
@@ -91,7 +111,7 @@ class WorklyCalculator {
 
     for (const parser of this.parsers) {
       if (parser.isMatch(hostname)) {
-        if (!parser.isValidPage(path, href)) return null;
+        if (!parser.isValidPage(path, href)) continue;
         const result = parser.parse();
         if (result) return result;
       }
@@ -103,7 +123,6 @@ class WorklyCalculator {
     let effectiveWage = this.hourlyWage;
     let effectiveCurrency = this.currency;
 
-    // Try real currency conversion if currencies differ
     if (priceCurrency && priceCurrency !== this.currency && this.currencyConverter) {
       try {
         const convertedPrice = await this.currencyConverter.convert(price, priceCurrency, this.currency);
@@ -111,7 +130,8 @@ class WorklyCalculator {
           return {
             hours: (convertedPrice / effectiveWage).toFixed(1),
             wage: effectiveWage,
-            currency: this.currency
+            currency: this.currency,
+            priceCurrency: priceCurrency
           };
         }
       } catch (e) {
@@ -149,7 +169,6 @@ class WorklyCalculator {
 
     const budget = await this.purchaseTracker.recordPurchase(price, workData);
 
-    const lang = this.langManager.getCurrentLanguage();
     const msg = budget.isOverBudget
       ? `${this.langManager.t('budgetExceeded')} ${Math.abs(budget.remainingHours).toFixed(1)} ${this.langManager.t('hours')}`
       : `${this.langManager.t('remainingBudget')} ${budget.remainingHours.toFixed(1)} ${this.langManager.t('hours')}`;
@@ -159,11 +178,13 @@ class WorklyCalculator {
   }
 }
 
-// Initialize
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => new WorklyCalculator());
-} else {
-  new WorklyCalculator();
+// Initialize — only in the top frame to prevent duplicates from iframes
+if (window.self === window.top) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new WorklyCalculator());
+  } else {
+    new WorklyCalculator();
+  }
 }
 
 // Listen for settings updates from popup
