@@ -1,0 +1,50 @@
+name: Publish to Chrome Web Store
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get version from manifest
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build zip
+        run: |
+          zip -r workly_v${{ steps.version.outputs.version }}.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "screenshots/*" \
+            -x "workly_v*" \
+            -x "*.md" \
+            -x ".gitignore" \
+            -x ".DS_Store" \
+            -x "**/.DS_Store" \
+            -x "package.json" \
+            -x "package-lock.json" \
+            -x "create-icons.html" \
+            -x "icons/logo.png" \
+            -x "log.txt" \
+            -x "build.sh"
+
+      - name: Upload zip as release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: workly_v${{ steps.version.outputs.version }}.zip
+
+      - name: Publish to Chrome Web Store
+        uses: mnao305/chrome-extension-upload@v5.0.0
+        with:
+          file-path: workly_v${{ steps.version.outputs.version }}.zip
+          extension-id: kdlcocbedgeehenocbndmimnngaioifm
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          publish: true
