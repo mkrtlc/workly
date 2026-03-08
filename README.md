@@ -108,8 +108,6 @@ Some good ways to contribute:
 
 ## Star History
 
-## Star History
-
 <a href="https://www.star-history.com/?repos=mkrtlc%2Fworkly&type=date&legend=top-left">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=mkrtlc/workly&type=date&theme=dark&legend=top-left" />
