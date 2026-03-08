@@ -27,11 +27,19 @@
   <em>Workly shows how many work hours a product costs — right on the page</em>
 </p>
 
-<!-- Add more screenshots here:
-  <img src="screenshots/popup.png" alt="Workly popup settings" width="350">
+<p align="center">
+  <img src="screenshots/settings-modal.png" alt="Workly settings modal" width="400">
+  &nbsp;&nbsp;
+  <img src="screenshots/purchase-history.png" alt="Purchase history" width="400">
+  <br>
+  <em>In-page settings and purchase tracking — without leaving the site</em>
+</p>
+
+<p align="center">
   <img src="screenshots/dashboard.png" alt="Workly dashboard" width="700">
-  <img src="screenshots/settings-modal.png" alt="In-page settings modal" width="350">
--->
+  <br>
+  <em>Full dashboard with monthly overview, stats, and searchable purchase history</em>
+</p>
 
 ## Features
 

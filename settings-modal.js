@@ -84,6 +84,12 @@ class SettingsModal {
     this._updateStats(shadow);
     this._updateCalculatedHourly(shadow);
 
+    // Dashboard link
+    shadow.getElementById('openDashboard')?.addEventListener('click', () => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
+      this.close();
+    });
+
     // Close events
     els.modalClose.addEventListener('click', () => this.close());
     els.overlay.addEventListener('click', (e) => {
@@ -359,7 +365,15 @@ class SettingsModal {
         </button>
       </div>
       <div class="footer">
-        <p>${t('footerText')}</p>
+        <a id="openDashboard" class="dashboard-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+          </svg>
+          ${t('viewDashboard')}
+        </a>
       </div>
     `;
   }
@@ -424,6 +438,8 @@ class SettingsModal {
       .save-button svg { width: 16px; height: 16px; }
       .footer { padding: 16px 20px; text-align: center; border-top: 1px solid #e0e0e0; background: white; margin-top: auto; }
       .footer p { font-size: 11px; color: #999; }
+      .dashboard-link { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 500; color: #666; cursor: pointer; text-decoration: none; transition: color 0.15s ease; }
+      .dashboard-link:hover { color: #000; }
       .modal-close { background: transparent; border: none; color: #999; cursor: pointer; padding: 8px; margin-right: -8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
       .modal-close:hover { color: #000; background: #f5f5f5; }
       .modal-close svg { width: 20px; height: 20px; }
