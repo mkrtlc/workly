@@ -19,6 +19,20 @@
   <img src="https://img.shields.io/github/contributors/mkrtlc/workly?style=flat-square" alt="GitHub contributors">
 </p>
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/widget-amazon.png" alt="Workly widget on Amazon" width="700">
+  <br>
+  <em>Workly shows how many work hours a product costs — right on the page</em>
+</p>
+
+<!-- Add more screenshots here:
+  <img src="screenshots/popup.png" alt="Workly popup settings" width="350">
+  <img src="screenshots/dashboard.png" alt="Workly dashboard" width="700">
+  <img src="screenshots/settings-modal.png" alt="In-page settings modal" width="350">
+-->
+
 ## Features
 
 - **Automatic price detection** on product pages with inline widget display
