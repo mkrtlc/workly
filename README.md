@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://lh3.googleusercontent.com/P5auOeYonbBUZKTVa6p7wQS41wBzqdDCpLUevnnLhRidaB6OY_MpBgI31sG0bus8vSPAXQYuJKYF6UOcV0jOmIcLOfE=s120" alt="Workly" width="120">
+  <img src="icons/logo.png" alt="Workly" width="120">
 </p>
 
 <h1 align="center">Workly</h1>
