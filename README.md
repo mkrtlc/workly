@@ -108,7 +108,7 @@ Some good ways to contribute:
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=mkrtlc/workly&type=Date)](https://star-history.com/#mkrtlc/workly&Date)
+[![Star History Chart](https://api.star-history.com/image?repos=mkrtlc/workly&type=date&legend=top-left)](https://www.star-history.com/?type=date&repos=mkrtlc%2Fworkly)
 
 ## License
 
