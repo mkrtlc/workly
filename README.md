@@ -106,6 +106,10 @@ Some good ways to contribute:
 - **Improve the dashboard** — charts, filters, new stats
 - **Bug fixes** — check the [Issues](https://github.com/mkrtlc/workly/issues) tab
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mkrtlc/workly&type=Date)](https://star-history.com/#mkrtlc/workly&Date)
+
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.
