@@ -11,8 +11,6 @@
 </p>
 
 <p align="center">
-  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/v/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square&label=Chrome%20Web%20Store&cacheSeconds=3600" alt="Chrome Web Store"></a>
-  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/users/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square&cacheSeconds=3600" alt="Users"></a>
   <img src="https://img.shields.io/github/stars/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub stars">
   <img src="https://img.shields.io/github/forks/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub forks">
   <img src="https://img.shields.io/github/issues/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub issues">
