@@ -5,18 +5,19 @@
 <h1 align="center">Workly</h1>
 
 <p align="center">
+  <strong>Workly helps you make informed purchasing decisions.</strong><br><br>
   A Chrome extension that shows how many hours you need to work to afford the product you're looking at.<br>
   Set your salary, browse any e-commerce site, and Workly will display the real cost of every item — in your time.
 </p>
 
 <p align="center">
-  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/v/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square&label=Chrome%20Web%20Store" alt="Chrome Web Store"></a>
-  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/users/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square" alt="Users"></a>
-  <img src="https://img.shields.io/github/stars/mkrtlc/workly?style=flat-square" alt="GitHub stars">
-  <img src="https://img.shields.io/github/forks/mkrtlc/workly?style=flat-square" alt="GitHub forks">
-  <img src="https://img.shields.io/github/issues/mkrtlc/workly?style=flat-square" alt="GitHub issues">
-  <img src="https://img.shields.io/github/license/mkrtlc/workly?style=flat-square" alt="GitHub license">
-  <img src="https://img.shields.io/github/contributors/mkrtlc/workly?style=flat-square" alt="GitHub contributors">
+  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/v/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square&label=Chrome%20Web%20Store&cacheSeconds=3600" alt="Chrome Web Store"></a>
+  <a href="https://chromewebstore.google.com/detail/workly/kdlcocbedgeehenocbndmimnngaioifm"><img src="https://img.shields.io/chrome-web-store/users/kdlcocbedgeehenocbndmimnngaioifm?style=flat-square&cacheSeconds=3600" alt="Users"></a>
+  <img src="https://img.shields.io/github/stars/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub stars">
+  <img src="https://img.shields.io/github/forks/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub forks">
+  <img src="https://img.shields.io/github/issues/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub issues">
+  <img src="https://img.shields.io/github/license/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub license">
+  <img src="https://img.shields.io/github/contributors/mkrtlc/workly?style=flat-square&cacheSeconds=3600" alt="GitHub contributors">
 </p>
 
 ## Screenshots
